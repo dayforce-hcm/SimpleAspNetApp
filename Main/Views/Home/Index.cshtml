@@ -1,0 +1,31 @@
+@{
+    ViewBag.Title = "Simple ASP.NET MVC Application";
+}
+
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard.css?v=2")" />
+
+<div class="dashboard">
+    <h1>Simple ASP.NET MVC Test Dashboard</h1>
+    
+    <div class="dashboard-container">
+        <div class="test-section">
+            <h2>Test Endpoints</h2>
+            <div class="test-group">
+                <h3>Basic Tests</h3>
+                <button class="test-button" data-endpoint="/Home/Ping" data-method="GET">Test Ping</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h2>Results</h2>
+            <div id="results" class="results-container">
+                <div class="result-item">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="@Url.Content("~/Scripts/Dashboard.js?v=3")"></script>
+}

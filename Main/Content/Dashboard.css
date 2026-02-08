@@ -1,0 +1,6 @@
+/* Additional Dashboard-specific styles */
+.dashboard-container {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px !important;
+}
