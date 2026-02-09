@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+    <h1>Test Content from Lib</h1>
+    <p>This is a standalone test page to verify FUTDC triggers when content changes.</p>
+    <p>Current time: <span id="time"></span></p>
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>

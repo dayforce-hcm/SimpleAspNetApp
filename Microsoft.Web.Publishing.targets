@@ -1,0 +1,46 @@
+﻿<Project>
+  <PropertyGroup>
+    <ReferencedContentManifest>$(IntermediateOutputPath)ReferencedContent.txt</ReferencedContentManifest>
+  </PropertyGroup>
+
+  <Target Name="Publish" DependsOnTargets="_CopyWebApplication" />
+
+  <Target Name="_GetReferencedProjectPublishItems">
+    <MSBuild Projects="@(ProjectReference)"
+             Targets="GetCopyToPublishDirectoryItems"
+             Properties="TargetFramework=$(TargetFramework)"
+             BuildInParallel="$(BuildInParallel)">
+      <Output TaskParameter="TargetOutputs" ItemName="_ReferencedProjectPublishItems" />
+    </MSBuild>
+  </Target>
+
+  <Target Name="Before_CopyWebApplicationLegacy" DependsOnTargets="_GetReferencedProjectPublishItems">
+    <!-- Add referenced project items to Content so they get copied -->
+    <ItemGroup>
+      <Content Include="%(_ReferencedProjectPublishItems.FullPath)" Link="%(_ReferencedProjectPublishItems.TargetPath)" />
+    </ItemGroup>
+    
+    <!-- Read what was copied last time -->
+    <ReadLinesFromFile File="$(ReferencedContentManifest)" Condition="Exists('$(ReferencedContentManifest)')">
+      <Output TaskParameter="Lines" ItemName="_FilesToDelete" />
+    </ReadLinesFromFile>
+    
+    <ItemGroup>
+      <!-- Get all content destination paths (using Link if set, otherwise relative path) -->
+      <_CurrentPublishedFiles Include="@(Content->'$(WebProjectOutputDir)\%(Link)')" Condition="'%(Content.Link)' != ''" />
+      <_CurrentPublishedFiles Include="@(Content->'$(WebProjectOutputDir)\%(RelativeDir)%(FileName)%(Extension)')" Condition="'%(Content.Link)' == ''" />
+      
+      <!-- Remove files that still exist from deletion list -->
+      <_FilesToDelete Remove="@(_CurrentPublishedFiles)" />
+    </ItemGroup>
+    
+    <!-- Delete obsolete files -->
+    <Delete Files="@(_FilesToDelete)" />
+    
+    <!-- Write manifest for next time -->
+    <WriteLinesToFile File="$(ReferencedContentManifest)" 
+                      Lines="@(_CurrentPublishedFiles)"
+                      Overwrite="true"
+                      WriteOnlyWhenDifferent="true" />
+  </Target>
+</Project>

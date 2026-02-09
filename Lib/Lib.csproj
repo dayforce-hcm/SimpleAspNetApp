@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <IsPublishable>False</IsPublishable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Content/**/*.*;Scripts/**/*.*;Views/**/*.*" />
+    <Content Include="Content/**/*.*;Scripts/**/*.*;Views/**/*.*" />
+    <Content Update="@(Content)" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+  </ItemGroup>
+</Project>

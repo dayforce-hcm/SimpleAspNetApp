@@ -3,5 +3,10 @@
     <ProduceReferenceAssembly Condition="'$(ProduceReferenceAssembly)' == ''">true</ProduceReferenceAssembly>
     <MicrosoftCodeDomProvidersDotNetCompilerPlatform_Version>4.1.0</MicrosoftCodeDomProvidersDotNetCompilerPlatform_Version>
     <MicrosoftNetCompilersToolset_Version>4.14.0</MicrosoftNetCompilersToolset_Version>
+    <PublishOnBuild Condition="'$(PublishOnBuild)' == ''">true</PublishOnBuild>
+    <OutDir>$(MSBuildThisFileDirectory)bin\</OutDir>
+    <AspNetTargetsPath>$(MSBuildThisFileDirectory)</AspNetTargetsPath>
+    <Disable_CopyWebApplication Condition="'$(PublishOnBuild)' != true">true</Disable_CopyWebApplication>
+    <OnBefore_CopyWebApplication>Before_CopyWebApplicationLegacy;_CopyWebApplicationLegacy</OnBefore_CopyWebApplication>
   </PropertyGroup>
 </Project>
