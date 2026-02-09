@@ -8,5 +8,6 @@
     <AspNetTargetsPath>$(MSBuildThisFileDirectory)</AspNetTargetsPath>
     <Disable_CopyWebApplication Condition="'$(PublishOnBuild)' != true">true</Disable_CopyWebApplication>
     <OnBefore_CopyWebApplication>Before_CopyWebApplicationLegacy;_CopyWebApplicationLegacy</OnBefore_CopyWebApplication>
+    <WebApplicationsTargetPath>$(MSBuildThisFileDirectory)Microsoft.WebApplication.targets</WebApplicationsTargetPath>
   </PropertyGroup>
 </Project>
