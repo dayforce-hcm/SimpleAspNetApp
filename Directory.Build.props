@@ -5,4 +5,25 @@
     <OutDir>$(MSBuildThisFileDirectory)bin\</OutDir>
   </PropertyGroup>
   <Import Project="$(MSBuildThisFileDirectory)WebApp.props" Condition="'$(UsingMSBuildSDKSystemWeb)' == true" />
+
+  <ItemDefinitionGroup>
+    <Compile>
+      <Watch>False</Watch>
+    </Compile>
+    <EmbeddedResource>
+      <Watch>False</Watch>
+    </EmbeddedResource>
+  </ItemDefinitionGroup>
+
+  <Target Name="UnwatchProjectFile" AfterTargets="_CoreCollectWatchItems">
+    <ItemGroup>
+      <Watch Remove="$(MSBuildProjectFullPath)" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="_AspNetCustomCollectWatchItems" BeforeTargets="_CoreCollectWatchItems">
+    <ItemGroup>
+      <Watch Include="%(Content.FullPath)" />
+    </ItemGroup>
+  </Target>
 </Project>
