@@ -10,6 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 	ProjectSection(SolutionItems) = preProject
 		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		EnableContentPublishThruFUTDC.targets = EnableContentPublishThruFUTDC.targets
 		Microsoft.Web.Publishing.targets = Microsoft.Web.Publishing.targets
 		Microsoft.WebApplication.targets = Microsoft.WebApplication.targets
 		WebApp.props = WebApp.props

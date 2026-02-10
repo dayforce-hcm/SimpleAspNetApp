@@ -1,0 +1,31 @@
+﻿<Project>
+  <PropertyGroup>
+    <!--Marker file to track when referenced project content is copied -->
+    <ReferencedContentFUTDCMarker>$(IntermediateOutputPath)ReferencedContentFUTDC.marker</ReferencedContentFUTDCMarker>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Track own Content files as inputs in web projects -->
+    <UpToDateCheckInput Include="@(Content)" />
+    <!-- Track the marker file as output for referenced content -->
+    <UpToDateCheckOutput Include="$(ReferencedContentFUTDCMarker)" Set="ReferencedProjectContent" />
+    <!-- Trigger a design-time build when the referenced content manifest changes,
+         so that the FUTDC input set is refreshed after files are added/removed -->
+    <AdditionalDesignTimeBuildInput Include="$(ReferencedContentManifest)" />
+  </ItemGroup>
+  
+  <Target Name="AddReferencedProjectPublishItemsToFUTDC" 
+          DependsOnTargets="_GetReferencedProjectPublishItems"
+          BeforeTargets="CollectUpToDateCheckInputDesignTime">
+    <ItemGroup>
+      <!-- Track referenced project publish items as inputs -->
+      <UpToDateCheckInput Include="@(_ReferencedProjectPublishItems->'%(FullPath)')" Set="ReferencedProjectContent" />
+    </ItemGroup>
+  </Target>
+  
+  <!-- Touch marker file after copying referenced content -->
+  <Target Name="TouchReferencedContentMarker"
+          AfterTargets="Before_CopyWebApplicationLegacy">
+    <Touch Files="$(ReferencedContentFUTDCMarker)" AlwaysCreate="true" />
+  </Target>
+</Project>

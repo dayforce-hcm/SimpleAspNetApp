@@ -1,0 +1,4 @@
+﻿<Project>
+  <Import Project="$(MSBuildThisFileDirectory)EnableContentPublishThruFUTDC.targets"
+          Condition="'$(UsingMSBuildSDKSystemWeb)' == true And '$(EnableContentPublishThruFUTDC)' == true" />
+</Project>
