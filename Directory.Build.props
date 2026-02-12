@@ -5,6 +5,7 @@
     <OutDir>$(MSBuildThisFileDirectory)bin\</OutDir>
   </PropertyGroup>
   <Import Project="$(MSBuildThisFileDirectory)WebApp.props" Condition="'$(UsingMSBuildSDKSystemWeb)' == true" />
+  <Import Project="$(MSBuildThisFileDirectory)AspNetCompiler.props" Condition="'$(UsingMicrosoftNoTargetsSdk)' == true" />
 
   <ItemDefinitionGroup>
     <Compile>

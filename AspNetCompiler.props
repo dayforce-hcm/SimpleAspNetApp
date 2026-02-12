@@ -1,0 +1,89 @@
+<Project>
+  <PropertyGroup>
+    <AspNetPrecompile Condition="'$(AspNetPrecompile)' == ''">false</AspNetPrecompile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(MvcBuildViews)' == ''">
+    <MvcBuildViews Condition="'$(Configuration)' == 'Release'">true</MvcBuildViews>
+    <MvcBuildViews Condition="'$(Configuration)' != 'Release'">false</MvcBuildViews>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsUtilityProject>true</IsUtilityProject>
+    <MvcBuildViews Condition="'$(PublishOnBuild)' != true">false</MvcBuildViews>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <DebugType>none</DebugType>
+    <MasterProjectName>$(MSBuildProjectName.Replace("AspNetCompiler.", ""))</MasterProjectName>
+    <WebProjectOutputDir>$(OutDir)_PublishedWebsites\$(MasterProjectName)</WebProjectOutputDir>
+    <OutDir>$(WebProjectOutputDir)\bin\</OutDir>
+    <TargetExt>.MvcBuildViews=$(MvcBuildViews)</TargetExt>
+    <TargetName>$(MasterProjectName)</TargetName>
+    <TargetPath>$(OutDir)$(TargetName)$(TargetExt)</TargetPath>
+    <DoRunAspNetCompilerDependsOn Condition="'$(NoBuild)' == 'true'"></DoRunAspNetCompilerDependsOn>
+    <DoRunAspNetCompilerDependsOn Condition="'$(NoBuild)' != 'true'">ResolveProjectReferences</DoRunAspNetCompilerDependsOn>
+    <DoRunAspNetCompilerDependsOn>$(DoRunAspNetCompilerDependsOn);PrepareRunAspNetCompiler</DoRunAspNetCompilerDependsOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MvcBuildViewsInput Include="$(MSBuildThisFileFullPath)" />
+    <MvcBuildViewsOutput Include="$(TargetPath)" />
+  </ItemGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)EnableAspNetCompilerFUTDC.targets"
+          Condition="'$(EnableContentPublishThruFUTDC)' == true And $(MvcBuildViews)" />
+
+  <!-- This target is expected by Visual Studio. Not needed when building with msbuild on the console. -->
+  <Target Name="CreateManifestResourceNames" />
+
+  <Target Name="PrepareRunAspNetCompiler">
+    <ItemGroup>
+      <MvcBuildViewsInput Include="$(OutDir)*.dll" />
+      <MvcBuildViewsInput Include="$(WebProjectOutputDir)\**\*.cshtml" />
+      <MvcBuildViewsInput Include="$(WebProjectOutputDir)\**\*.aspx" />
+      <MvcBuildViewsInput Include="$(WebProjectOutputDir)\**\*.ascx" />
+      <MvcBuildViewsInput Include="$(WebProjectOutputDir)\**\web.config" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MvcBuildViewsOutput Include="$(WebProjectOutputDir)\web.config"
+                           Condition="!Exists('$(WebProjectOutputDir)\web.config')"/>
+      <MvcBuildViewsOutput Include="$(WebProjectOutputDir)_Precompiled\PrecompiledApp.config"
+                           Condition="'$(AspNetPrecompile)' == true And !Exists('$(WebProjectOutputDir)_Precompiled\PrecompiledApp.config')" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="Publish">
+    <ItemGroup>
+      <ProjectReference Update="@(ProjectReference)" Targets="Publish" />
+    </ItemGroup>
+  </Target>
+
+  <Target Name="RunAspNetCompiler" AfterTargets="Build;Publish"
+          DependsOnTargets="DoRunAspNetCompiler;WriteAspNetCompilerTargetPath;OutputAspNetCompilerMessage" />
+
+  <Target Name="DoRunAspNetCompiler"
+          Condition="$(MvcBuildViews)"
+          DependsOnTargets="$(DoRunAspNetCompilerDependsOn)"
+          Inputs="@(MvcBuildViewsInput)"
+          Outputs="@(MvcBuildViewsOutput)">
+    <PropertyGroup>
+      <AspNetCompilerCommand>C:\Windows\Microsoft.NET\Framework64\v4.0.30319\aspnet_compiler.exe</AspNetCompilerCommand>
+      <AspNetCompilerCommand>$(AspNetCompilerCommand) -v $(MasterProjectName) -p $(WebProjectOutputDir)</AspNetCompilerCommand>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(AspNetPrecompile)' == true">
+      <AspNetCompilerCommand>$(AspNetCompilerCommand) -fixednames $(WebProjectOutputDir)_Precompiled</AspNetCompilerCommand>
+    </PropertyGroup>
+    <Message Text="Running AspNetCompiler for $(WebProjectOutputDir)" Importance="High" />
+    <RemoveDir Directories="$(WebProjectOutputDir)_Precompiled" />
+    <Exec Command="$(AspNetCompilerCommand)" LogStandardErrorAsError="true" />
+  </Target>
+
+  <Target Name="WriteAspNetCompilerTargetPath" Inputs="@(MvcBuildViewsInput)" Outputs="@(MvcBuildViewsOutput)">
+    <WriteLinesToFile File="$(TargetPath)" Lines="@(MvcBuildViewsInput)" Overwrite="True"/>
+  </Target>
+
+  <Target Name="OutputAspNetCompilerMessage">
+    <!-- Emit a high-importance message that Terminal Logger recognizes for output path display -->
+    <Message Text="$(MSBuildProjectName) -> $(TargetPath)" Importance="High" />
+  </Target>
+</Project>

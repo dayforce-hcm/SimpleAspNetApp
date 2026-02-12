@@ -1,0 +1,21 @@
+<Project>
+  <!-- Make VS FUTDC aware of the files relevant to ASP.NET compilation.
+       The DLLs and views are in the published output dir, which is populated
+       by the master project build before the utility project runs. -->
+  <Target Name="AddAspNetCompilerInputsToFUTDC" BeforeTargets="CollectUpToDateCheckInputDesignTime">
+    <ItemGroup>
+      <UpToDateCheckInput Include="$(OutDir)*.dll" Set="AspNetCompilerInputs" />
+      <UpToDateCheckInput Include="$(WebProjectOutputDir)\**\*.cshtml" Set="AspNetCompilerInputs" />
+      <UpToDateCheckInput Include="$(WebProjectOutputDir)\**\*.aspx" Set="AspNetCompilerInputs" />
+      <UpToDateCheckInput Include="$(WebProjectOutputDir)\**\*.ascx" Set="AspNetCompilerInputs" />
+      <UpToDateCheckInput Include="$(WebProjectOutputDir)\**\web.config" Set="AspNetCompilerInputs" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <UpToDateCheckOutput Include="$(TargetPath)" Set="AspNetCompilerInputs" />
+    <!-- Trigger a DTB re-run when the marker file changes, so FUTDC refreshes
+         its input globs (e.g. after first build populates the output dir) -->
+    <AdditionalDesignTimeBuildInput Include="$(TargetPath)" />
+  </ItemGroup>
+</Project>

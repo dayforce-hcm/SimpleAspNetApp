@@ -1,4 +1,4 @@
-<Project>
+<Project TreatAsLocalProperty="MvcBuildViews">
   <PropertyGroup>
     <MicrosoftCodeDomProvidersDotNetCompilerPlatform_Version>4.1.0</MicrosoftCodeDomProvidersDotNetCompilerPlatform_Version>
     <MicrosoftNetCompilersToolset_Version>4.14.0</MicrosoftNetCompilersToolset_Version>
@@ -9,5 +9,6 @@
     <WebProjectOutputDir>$(OutDir)_PublishedWebsites\$(MSBuildProjectName)</WebProjectOutputDir>
     <OutDir>$(WebProjectOutputDir)\bin\</OutDir>
     <WebProjectOutputDirInsideProject Condition="'$(PublishOnBuild)' == true">False</WebProjectOutputDirInsideProject>
+    <MvcBuildViews>False</MvcBuildViews>
   </PropertyGroup>
 </Project>
